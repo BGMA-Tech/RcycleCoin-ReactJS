@@ -7,10 +7,7 @@ import Slider from '../components/Slider'
 function Home() {
   return (
     <div className='container'>
-        <Announcement/>
-        <Navbar/>
         <Slider/>
-        <Footer/>
        </div>
   )
 }

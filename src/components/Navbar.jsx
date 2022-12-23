@@ -1,6 +1,8 @@
 import { Search} from "@material-ui/icons";
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
+
 
 const Container = styled.div`
   height: 60px;
@@ -21,10 +23,6 @@ const Left = styled.div`
   
 `;
 
-const Language = styled.span`
-  font-size: 14px;
-  cursor: pointer;
-`;
 
 const SearchContainer = styled.div`
   border: 0.5px solid lightgray;
@@ -45,6 +43,7 @@ const Center = styled.div`
 
 const Logo = styled.h1`
   font-weight: bold;
+  color: black;
 `;
 const Right = styled.div`
   flex: 1;
@@ -57,6 +56,7 @@ const MenuItem = styled.div`
   font-size: 14px;
   cursor: pointer;
   margin-left: 25px;
+  color: black;
 `;
 
 const Navbar = () => {
@@ -64,18 +64,19 @@ const Navbar = () => {
     <Container>
       <Wrapper>
         <Left>
-          <Language>EN</Language>
            <SearchContainer>
             <Input placeholder="Search" />
           </SearchContainer> 
         </Left>
         <Center>
-          <Logo>BGMA.</Logo>
+          <Link to={"/"} style={{ textDecoration: 'none' }}>
+            <Logo>BGMA.</Logo>
+          </Link>
         </Center>
         <Right>
-          <MenuItem>CATEGORY</MenuItem>
-          <MenuItem>REGISTER</MenuItem>
-          <MenuItem>SIGN IN</MenuItem>
+          <Link to={"/productList"} style={{ textDecoration: 'none' }}><MenuItem>CATEGORY</MenuItem></Link>
+          <Link to={"/register"} style={{ textDecoration: 'none' }}><MenuItem>REGISTER</MenuItem></Link>
+          <Link to={"/login"} style={{ textDecoration: 'none' }}><MenuItem>LOGIN</MenuItem></Link>
         
         </Right>
       </Wrapper>
