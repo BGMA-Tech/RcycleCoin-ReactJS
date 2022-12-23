@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Announcement from "../components/Announc";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
+import plasticBottle from "../assets/images/plasticBottle.png";
 
 const Container = styled.div``;
 
@@ -119,11 +120,10 @@ const EmptyDiv = styled.div`
 const Product = () => {
   return (
     <Container>
-      <Navbar />
       <Announcement />
       <Wrapper>
         <ImgContainer>
-          <Image src="https://i.ibb.co/S6qMxwr/jean.jpg" />
+          <Image src={plasticBottle} />
         </ImgContainer>
         <InfoContainer>
           <Title>Denim Jumpsuit</Title>
@@ -148,7 +148,6 @@ const Product = () => {
           <Button>ADD TO YOUR WALLET</Button>
         </InfoContainer>
       </Wrapper>
-      <Footer />
     </Container>
   );
 };
