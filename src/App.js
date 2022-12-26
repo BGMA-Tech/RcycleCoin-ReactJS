@@ -9,6 +9,11 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import styled from "styled-components";
 import Announcement from "./components/Announc";
+import AdminDashboard from "./pages/AdminDashboard";
+import AdminVerification from "./pages/AdminVerification";
+import AdminProducts from "./pages/AdminProducts";
+import AdminProfile from "./pages/AdminProfile";
+import Transaction from "./pages/Transaction";
 
 const RouterSize = styled.div`
   height: 800px;
@@ -26,6 +31,11 @@ function App() {
           <Route path="/product" element={<Product />} />
           <Route path="/register" element={<Register />} />
           <Route path="/productList" element={<ProductList />} />
+          <Route path="/adminDashboard" element={<AdminDashboard />} />
+          <Route path="/adminVerification" element={<AdminVerification />} />
+          <Route path="/adminProducts" element={<AdminProducts />} />
+          <Route path="/adminProfile" element={<AdminProfile />} />
+          <Route path="/transaction" element={<Transaction />} />
         </Routes>
       </RouterSize>
       <Footer />

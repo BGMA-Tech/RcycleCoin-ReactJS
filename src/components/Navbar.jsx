@@ -1,14 +1,14 @@
-import { Search} from "@material-ui/icons";
+import { Search } from "@material-ui/icons";
 import React from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-
 
 const Container = styled.div`
   height: 60px;
   margin-bottom: 20px;
 `;
- 
+
 const Wrapper = styled.div`
   padding: 0px 20px;
   display: flex;
@@ -20,25 +20,6 @@ const Left = styled.div`
   flex: 1;
   display: flex;
   align-items: center;
-  
-`;
-
-
-const SearchContainer = styled.div`
-  border: 0.5px solid lightgray;
-  display: flex;
-  align-items: center;
-  margin-left: 25px;
-  padding: 5px;
-`;
-
-const Input = styled.input`
-  border: none;
-`;
-
-const Center = styled.div`
-  flex: 1;
-  text-align: center;
 `;
 
 const Logo = styled.h1`
@@ -49,7 +30,6 @@ const Right = styled.div`
   flex: 1;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
 `;
 
 const MenuItem = styled.div`
@@ -64,20 +44,35 @@ const Navbar = () => {
     <Container>
       <Wrapper>
         <Left>
-           <SearchContainer>
-            <Input placeholder="Search" />
-          </SearchContainer> 
-        </Left>
-        <Center>
-          <Link to={"/"} style={{ textDecoration: 'none' }}>
+          <Link to={"/"} style={{ textDecoration: "none" }}>
             <Logo>BGMA.</Logo>
           </Link>
-        </Center>
+        </Left>
         <Right>
-          <Link to={"/productList"} style={{ textDecoration: 'none' }}><MenuItem>CATEGORY</MenuItem></Link>
-          <Link to={"/register"} style={{ textDecoration: 'none' }}><MenuItem>REGISTER</MenuItem></Link>
-          <Link to={"/login"} style={{ textDecoration: 'none' }}><MenuItem>LOGIN</MenuItem></Link>
-        
+          <Link to={"/productList"} style={{ textDecoration: "none" }}>
+            <MenuItem>CATEGORY</MenuItem>
+          </Link>
+          <Link to={"/register"} style={{ textDecoration: "none" }}>
+            <MenuItem>REGISTER</MenuItem>
+          </Link>
+          <Link to={"/login"} style={{ textDecoration: "none" }}>
+            <MenuItem>LOGIN</MenuItem>
+          </Link>
+          <Link to={"/adminDashboard"} style={{ textDecoration: "none" }}>
+            <MenuItem>DASHBOARD</MenuItem>
+          </Link>
+          <Link to={"/adminVerification"} style={{ textDecoration: "none" }}>
+            <MenuItem>VERIFICATION</MenuItem>
+          </Link>
+          <Link to={"/adminProfile"} style={{ textDecoration: "none" }}>
+            <MenuItem>PROFILE</MenuItem>
+          </Link>
+          <Link to={"/transaction"} style={{ textDecoration: "none" }}>
+            <MenuItem>TRANSACTION</MenuItem>
+          </Link>
+          <Link to={"/adminProducts"} style={{ textDecoration: "none" }}>
+            <MenuItem>PRODUCT</MenuItem>
+          </Link>
         </Right>
       </Wrapper>
     </Container>
