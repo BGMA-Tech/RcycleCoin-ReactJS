@@ -8,7 +8,7 @@ const Container = styled.div`
       rgba(255, 255, 255, 0.1),
       rgba(255, 255, 255, 0.5)
     ),
-    url("https://cdn.friendsoftheearth.uk/sites/default/files/styles/hero_image/public/media/images/Recycling-bottles_1920crop%C2%A9Lacey-Williams_Unsplash.jpg?itok=9QPqO49A")
+    url("https://www.realsimple.com/thmb/wivEhy86KowWw4crdEaKAE5gNBM=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/how-to-recycle-beauty-products-2000-b5fea85212ad443caedc2400ab953359.jpg")
       center;
   background-size: cover;
   display: flex;
@@ -20,7 +20,7 @@ const Wrapper = styled.div`
   width: 25%;
   padding: 20px;
   background-color: white;
-  border-radius: 5%;  
+  border-radius: 5%;
 `;
 
 const Title = styled.h1`
@@ -40,13 +40,15 @@ const Input = styled.input`
   min-width: 40%;
   margin: 10px 0;
   padding: 10px;
+  :focus {
+    outline: none !important;
+  }
 `;
 
 const Button = styled.button`
-
   border: none;
   padding: 15px 20px;
-  background-color: #86B049;
+  background-color: #86b049;
   color: white;
   cursor: pointer;
   margin-bottom: 10px;

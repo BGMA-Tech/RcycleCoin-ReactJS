@@ -41,6 +41,9 @@ const Input = styled.input`
   max-width: 40%;
   margin: 20px 10px 0px 0px;
   padding: 10px;
+  :focus {
+    outline: none !important;
+  }
 `;
 
 const Agreement = styled.span`
@@ -52,7 +55,7 @@ const Button = styled.button`
   width: 100%;
   border: none;
   padding: 15px 20px;
-  background-color: #86B049;
+  background-color: #86b049;
   color: white;
   cursor: pointer;
   margin: 25px 30px 0px 25px;
@@ -62,7 +65,7 @@ const CheckButton = styled.button`
   border: none;
   margin: 20px 10px 0px 6px;
   padding: 10px 10px;
-  background-color: #86B049;
+  background-color: #86b049;
   color: white;
   cursor: pointer;
 `;
@@ -78,8 +81,8 @@ const Register = () => {
           <Input placeholder="ID number" />
           <Form>
             {/* TODO: Max length doesn't work */}
-          <Input placeholder="birthday year" type={"number"}  maxLength={4}/>
-          <CheckButton>CREATE</CheckButton>
+            <Input placeholder="birthday year" type={"number"} maxLength={4} />
+            <CheckButton>CREATE</CheckButton>
           </Form>
           <Input placeholder="username" />
           <Input placeholder="email" />
@@ -88,7 +91,7 @@ const Register = () => {
           <Button>CREATE</Button>
           <Agreement>
             By creating an account, I consent to the processing of my personal
-            data in  <b>PRIVACY POLICY</b>
+            data in <b>PRIVACY POLICY</b>
           </Agreement>
         </Form>
       </Wrapper>

@@ -1,6 +1,6 @@
 import { Add, Remove } from "@material-ui/icons";
 import styled from "styled-components";
-import Announcement from "../components/Announc";
+
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import plasticBottle from "../assets/images/plasticBottle.png";
@@ -81,7 +81,6 @@ const AddContainer = styled.div`
   justify-content: center;
   margin-top: 50px;
   margin-bottom: 50px;
-
 `;
 
 const AmountContainer = styled.div`
@@ -108,8 +107,8 @@ const Button = styled.button`
   cursor: pointer;
   font-weight: 500;
 
-  &:hover{
-      background-color: #f8f4f4;
+  &:hover {
+    background-color: #f8f4f4;
   }
 `;
 
@@ -120,7 +119,6 @@ const EmptyDiv = styled.div`
 const Product = () => {
   return (
     <Container>
-      <Announcement />
       <Wrapper>
         <ImgContainer>
           <Image src={plasticBottle} />
@@ -134,16 +132,15 @@ const Product = () => {
             tristique tortor pretium ut. Curabitur elit justo, consequat id
             condimentum ac, volutpat ornare.
           </Desc>
-          <EmptyDiv/>
-          
-          <AddContainer >
-          <Price>RC 20</Price>
+          <EmptyDiv />
+
+          <AddContainer>
+            <Price>RC 20</Price>
             <AmountContainer>
               <Remove />
               <Amount>1</Amount>
               <Add />
             </AmountContainer>
-            
           </AddContainer>
           <Button>ADD TO YOUR WALLET</Button>
         </InfoContainer>
