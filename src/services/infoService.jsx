@@ -1,7 +1,22 @@
-import axios from 'axios';
-import { INFO_BASE_URL } from '../constants/serviceConstants.jsx';
+import axios from "axios";
+import { INFO_BASE_URL } from "../constants/serviceConstants.jsx";
 
 export default class InfoService {
+  constructor() {
+    const cookies = new Cookies();
+    axios.defaults.headers.common["Authorization"] = `Bearer ${cookies.get(
+      "token"
+    )}`;
+    axios.interceptors.response.use(
+      (res) => res,
+
+      (err) => {
+        alert("Please login again");
+        //cookies.remove("token");
+        // window.location.replace("/login");
+      }
+    );
+  }
   add(firstName, lastName, role, image) {
     return axios.post(`${INFO_BASE_URL}/add`, {
       firstName: firstName,

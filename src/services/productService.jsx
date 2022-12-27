@@ -1,7 +1,24 @@
-import axios from 'axios';
-import { RCYCLE_PRODUCT_BASE_URL } from '../constants/serviceConstants.jsx';
+import axios from "axios";
+import Cookies from "universal-cookie/cjs/Cookies.js";
+import { RCYCLE_PRODUCT_BASE_URL } from "../constants/serviceConstants.jsx";
 
 export default class ProductService {
+  constructor() {
+    const cookies = new Cookies();
+    axios.defaults.headers.common["Authorization"] = `Bearer ${cookies.get(
+      "token"
+    )}`;
+
+    axios.interceptors.response.use(
+      (res) => res,
+
+      (err) => {
+        alert("Please login again");
+        // cookies.remove("token");
+        // window.location.replace("/login");
+      }
+    );
+  }
   add(name, point, typeId) {
     return axios.post(`${RCYCLE_PRODUCT_BASE_URL}/add`, {
       recycleName: name,
@@ -11,7 +28,9 @@ export default class ProductService {
   }
 
   delete(id) {
-    return axios.delete(`${RCYCLE_PRODUCT_BASE_URL}/delete/`, { id: id });
+    return axios.delete(`${RCYCLE_PRODUCT_BASE_URL}/delete`, {
+      data: { id: id },
+    });
   }
 
   update(id, name, point, typeId) {
@@ -25,7 +44,7 @@ export default class ProductService {
 
   getAll(page, size) {
     return axios.get(
-      `${RCYCLE_PRODUCT_BASE_URL}/RecycleProduct/getlist?Page=${page}&PageSize=${size}`
+      `${RCYCLE_PRODUCT_BASE_URL}/getlist?Page=${page}&PageSize=${size}`
     );
   }
 
@@ -33,12 +52,10 @@ export default class ProductService {
     return axios.get(`${RCYCLE_PRODUCT_BASE_URL}/${id}`);
   }
 
-  getAllByDynamicFilter(page, size, name, typeId) {
+  getAllByDynamicFilter(page, size) {
     return axios.get(
       `${RCYCLE_PRODUCT_BASE_URL}/GetList/ByDynamic?Page=${page}&PageSize=${size}`,
-      {
-        //TODO: Get All By Dynamic
-      }
+      {}
     );
   }
 }

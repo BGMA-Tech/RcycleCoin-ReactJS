@@ -1,5 +1,8 @@
 import { Add, Remove } from "@material-ui/icons";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
+import UserProductService from "../services/userProductService";
+import dateFormat from "dateformat";
 
 const Container = styled.div``;
 
@@ -89,37 +92,77 @@ const Button = styled.button`
   border-radius: 5px;
 `;
 const AdminVerification = () => {
+  const [userProducts, setUserProducts] = useState([]);
+  const userProductService = new UserProductService();
+
+  const verifyRequest = (userProductId, userId, productId, quantity, coin) => {
+    userProductService.verifyUserProductRequest(
+      userProductId,
+      userId,
+      productId,
+      quantity,
+      coin
+    );
+  };
+
+  useEffect(() => {
+    userProductService
+      .getAllByDynamicFilter(0, 10)
+      .then((res) => {
+        console.log(res.data.items);
+        setUserProducts(res.data.items);
+      })
+      .catch((err) => console.error(err));
+  }, []);
+
   return (
     <Container>
       <Wrapper>
         <Title>Verification</Title>
-        <Product>
-          <ProductDetail>
-            <Details>
-              <ProductId>
-                <b>Name Surname: </b> Burak İmdat
-              </ProductId>
-              <ProductName>
-                <b>Date:</b>
-                12/12/2022
-              </ProductName>
-            </Details>
-          </ProductDetail>
-          <ProductDetail>
-            <Details>
-              <ProductId>
-                <b>Product Name: </b> Water Bottle
-              </ProductId>
-              <ProductName>
-                <b>Quantity: </b> 4
-              </ProductName>
-            </Details>
-          </ProductDetail>
-          <PriceDetail>
-            <ProductPrice>RC 30</ProductPrice>
-          </PriceDetail>
-          <Button>VERIFY</Button>
-        </Product>
+        {userProducts.map((userProduct) => (
+          <Product>
+            <ProductDetail>
+              <Details>
+                <ProductId>
+                  <b>User ID: </b> {userProduct.userId}
+                </ProductId>
+                <ProductName>
+                  <b>Date: </b>
+                  {dateFormat(userProduct.createdAt, "mmmm dS, yyyy")}
+                </ProductName>
+              </Details>
+            </ProductDetail>
+            <ProductDetail>
+              <Details>
+                <ProductId>
+                  <b>Product Name: </b> {userProduct.recycleName}
+                </ProductId>
+                <ProductName>
+                  <b>Quantity: </b> {userProduct.quantity}
+                </ProductName>
+              </Details>
+            </ProductDetail>
+            <PriceDetail>
+              <ProductPrice>
+                RC {userProduct.recyclePoint * userProduct.quantity}
+              </ProductPrice>
+            </PriceDetail>
+            <Button
+              onClick={() =>
+                verifyRequest(
+                  userProduct.id,
+                  userProduct.userId,
+                  userProduct.recycleProductId,
+                  userProduct.quantity,
+                  userProduct.recyclePoint
+                )
+              }
+            >
+              VERIFY
+            </Button>
+          </Product>
+        ))}
+
         <Hr />
       </Wrapper>
     </Container>

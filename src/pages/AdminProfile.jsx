@@ -1,5 +1,12 @@
 import { Add, Remove } from "@material-ui/icons";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
+import UserService from "../services/userService";
+import jwtDecode from "jwt-decode";
+import Cookies from "universal-cookie";
+import TokenService from "../services/tokenService";
+import dateFormat from "dateformat";
+import { CircularProgress } from "@material-ui/core";
 
 const Container = styled.div``;
 
@@ -88,46 +95,73 @@ const Button = styled.button`
   border-radius: 5px;
 `;
 const AdminProfile = () => {
+  const [user, setUser] = useState({
+    info: {
+      firstName: "",
+    },
+    coin: {
+      totalCoin: 0,
+    },
+  });
+  const userService = new UserService();
+  const tokenService = new TokenService();
+  const [isLoading, setIsLoading] = useState(false);
+  useEffect(() => {
+    setIsLoading(true);
+    userService
+      .getById(tokenService.getUserId())
+      .then((res) => {
+        setUser(res.data.data.data);
+        setIsLoading(false);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
   return (
     <Container>
       <Wrapper>
         <Title>Profile Detail</Title>
-        <Product>
-          <ProductDetail>
-            <Details>
-              <ProductId>
-                <b>Personel ID: </b> 12345xx
-              </ProductId>
-              <ProductName>
-                <b>Email:</b>
-                contact@bgma.dev
-              </ProductName>
-            </Details>
-          </ProductDetail>
-          <ProductDetail>
-            <Details>
-              <ProductId>
-                <b>First Name: </b> Burak
-              </ProductId>
-              <ProductName>
-                <b>Last Name: </b> İMDAT
-              </ProductName>
-            </Details>
-          </ProductDetail>
-          <ProductDetail>
-            <Details>
-              <ProductId>
-                <b>Kayıt Tarihi: </b> 26/12/2022
-              </ProductId>
-              <ProductName>
-                <b>Role: </b> User
-              </ProductName>
-            </Details>
-          </ProductDetail>
-          <PriceDetail>
-            <ProductPrice>RC 30</ProductPrice>
-          </PriceDetail>
-        </Product>
+        {isLoading ? (
+          <CircularProgress color="primary" />
+        ) : (
+          <Product>
+            <ProductDetail>
+              <Details>
+                <ProductId>
+                  <b>Personel ID: </b> {user.personelId}
+                </ProductId>
+                <ProductName>
+                  <b>Email: </b>
+                  {user.email}
+                </ProductName>
+              </Details>
+            </ProductDetail>
+            <ProductDetail>
+              <Details>
+                <ProductId>
+                  <b>First Name: </b> {user.info.firstName}
+                </ProductId>
+                <ProductName>
+                  <b>Last Name: </b> {user.info.lastName}
+                </ProductName>
+              </Details>
+            </ProductDetail>
+            <ProductDetail>
+              <Details>
+                <ProductId>
+                  <b>Kayıt Tarihi: </b>
+                  {dateFormat(user.info.createdAt, "mmmm dS, yyyy")}
+                </ProductId>
+                <ProductName>
+                  <b>Role: </b> {user.info.role}
+                </ProductName>
+              </Details>
+            </ProductDetail>
+            <PriceDetail>
+              <ProductPrice>RC {user.coin.totalCoin}</ProductPrice>
+            </PriceDetail>
+          </Product>
+        )}
         <Hr />
       </Wrapper>
     </Container>

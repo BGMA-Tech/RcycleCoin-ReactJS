@@ -3,7 +3,12 @@ import styled from "styled-components";
 
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
-import plasticBottle from "../assets/images/plasticBottle.png";
+import rcycleIcon from "../assets/images/recycle.jpg";
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { useState } from "react";
+import UserProductService from "../services/userProductService";
+import TokenService from "../services/tokenService";
 
 const Container = styled.div``;
 
@@ -17,14 +22,16 @@ const ImgContainer = styled.div`
 `;
 
 const Image = styled.img`
-  width: 100%;
-  height: 90vh;
+  width: 80%;
+
   object-fit: cover;
 `;
 
 const InfoContainer = styled.div`
   flex: 1;
   padding: 0px 50px;
+  align-items: center;
+  justify-content: center;
 `;
 
 const Title = styled.h1`
@@ -38,7 +45,6 @@ const Desc = styled.p`
 const Price = styled.span`
   font-weight: 100;
   font-size: 40px;
-  padding-right: 50px;
 `;
 
 const FilterContainer = styled.div`
@@ -113,36 +119,68 @@ const Button = styled.button`
 `;
 
 const EmptyDiv = styled.div`
-  height: 200px;
+  height: 250px;
+`;
+
+const EmptyDivHorizontally = styled.div`
+  width: 75px;
 `;
 
 const Product = () => {
+  const location = useLocation();
+  const [product, setProduct] = useState({});
+  const [quantity, setQuantity] = useState(1);
+  const userProductService = new UserProductService();
+  const tokenService = new TokenService();
+
+  const addUserProductService = () => {
+    userProductService
+      .add(tokenService.getUserId, product.id, quantity)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  };
+
+  const addQuantity = () => {
+    if (quantity >= 30) return;
+
+    setQuantity(quantity + 1);
+  };
+  const removeQuantity = () => {
+    if (quantity <= 1) return;
+
+    setQuantity(quantity - 1);
+  };
+
+  useEffect(() => {
+    setProduct(location.state);
+  }, []);
+
   return (
     <Container>
       <Wrapper>
         <ImgContainer>
-          <Image src={plasticBottle} />
+          <Image src={rcycleIcon} />
         </ImgContainer>
         <InfoContainer>
-          <Title>Denim Jumpsuit</Title>
-          <Desc>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-            venenatis, dolor in finibus malesuada, lectus ipsum porta nunc, at
-            iaculis arcu nisi sed mauris. Nulla fermentum vestibulum ex, eget
-            tristique tortor pretium ut. Curabitur elit justo, consequat id
-            condimentum ac, volutpat ornare.
-          </Desc>
+          <Title>{product.recycleName}</Title>
           <EmptyDiv />
-
           <AddContainer>
-            <Price>RC 20</Price>
+            <Price>RC {product.recyclePoint}</Price>
+            <EmptyDivHorizontally />
             <AmountContainer>
-              <Remove />
-              <Amount>1</Amount>
-              <Add />
+              <Remove onClick={removeQuantity} />
+              <Amount>{quantity}</Amount>
+              <Add onClick={addQuantity} />
             </AmountContainer>
           </AddContainer>
-          <Button>ADD TO YOUR WALLET</Button>
+          <AddContainer>
+            <AmountContainer>
+              <Price>Total RC = {quantity * product.recyclePoint}</Price>
+            </AmountContainer>
+          </AddContainer>
+          <Button onClick={() => addUserProductService()}>
+            ADD TO YOUR WALLET
+          </Button>
         </InfoContainer>
       </Wrapper>
     </Container>

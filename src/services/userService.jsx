@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { USER_BASE_URL } from '../constants/serviceConstants.jsx';
+import axios from "axios";
+import { USER_BASE_URL } from "../constants/serviceConstants.jsx";
 
 export default class UserService {
   login(email, password) {
@@ -21,10 +21,15 @@ export default class UserService {
   }
 
   getById(id) {
-    return axios.get(`${USER_BASE_URL}/getbyid?id=${id}`);
+    return axios.get(`${USER_BASE_URL}/getbyid?userId=${id}`);
   }
 
-  getVerifyId(id) {
-    return axios.post(`${USER_BASE_URL}/getverifyid?id=${id}`);
+  getVerifyId(id, name, lastname, year) {
+    return axios.post(`${USER_BASE_URL}/getverifyid`, {
+      idNumber: id,
+      name: name,
+      lastName: lastname,
+      birthdayYear: parseInt(year),
+    });
   }
 }

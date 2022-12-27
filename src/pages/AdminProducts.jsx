@@ -1,8 +1,12 @@
 import { Add, Remove } from "@material-ui/icons";
+import { useState } from "react";
+import { useEffect } from "react";
 import styled from "styled-components";
 import Announcement from "../components/Announc";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
+import ProductService from "../services/productService";
+import TypeService from "../services/typeService";
 
 const Container = styled.div``;
 
@@ -108,6 +112,16 @@ const Button = styled.button`
   margin-bottom: 10px;
   border-radius: 5px;
 `;
+
+const ButtonDelete = styled.button`
+  border: none;
+  padding: 8px 40px;
+  background-color: #d20909;
+  color: white;
+  cursor: pointer;
+  margin-bottom: 10px;
+  border-radius: 5px;
+`;
 const Input = styled.input`
   flex: 1;
   min-width: 10%;
@@ -140,6 +154,80 @@ const Option = styled.option`
 `;
 
 const AdminProducts = () => {
+  const typeService = new TypeService();
+  const productService = new ProductService();
+  const [types, setTypes] = useState([]);
+  const [typeName, setTypeName] = useState("");
+  const [selectedTypeId, setSelectedTypeId] = useState(0);
+  const [productName, setProductName] = useState("");
+  const [price, setPrice] = useState(0);
+  const [products, setProducts] = useState([]);
+
+  const clearInput = () => {
+    setTypeName("");
+    setProductName("");
+    setPrice(0);
+  };
+
+  const addType = () => {
+    typeService
+      .add(typeName)
+      .then((res) => {
+        console.log(res);
+        getTypes();
+      })
+      .catch((err) => console.log(err))
+      .finally(() => {
+        setTypeName("");
+      });
+  };
+
+  const addProduct = () => {
+    productService
+      .add(productName, price, types[selectedTypeId].id)
+      .then((res) => {
+        setProducts(products);
+
+        window.location.reload();
+      })
+      .catch((err) => console.log(err))
+      .finally(() => clearInput());
+  };
+
+  const deleteProduct = (id) => {
+    productService
+      .delete(id)
+      .then((res) => {
+        console.log(res);
+        setProducts(products);
+        window.location.reload();
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const getAllProducts = () => {
+    productService
+      .getAll(0, 10)
+      .then((res) => {
+        setProducts(res.data.items);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const getTypes = () => {
+    typeService
+      .getAll(0, 10)
+      .then((res) => {
+        setTypes(res.data.items);
+        setSelectedTypeId(res.data.items[0].id);
+        getAllProducts();
+      })
+      .catch((err) => console.log(err));
+  };
+  useEffect(() => {
+    getTypes();
+  }, []);
+
   return (
     <Container>
       <Wrapper>
@@ -147,56 +235,78 @@ const AdminProducts = () => {
         <Details>
           <ProductName>
             <b>Type: </b>
-            <Input placeholder="Write type name..." />
-            <Button>ADD</Button>
+            <Input
+              placeholder="Write type name..."
+              value={typeName}
+              onChange={(e) => setTypeName(e.target.value)}
+            />
+            <Button onClick={() => addType()}>ADD</Button>
           </ProductName>
           <Hr />
           <ProductName>
             <b>Product: </b>
-            <Select name="Type" id="Type">
-              <Option value="Bottle">Bottle</Option>
-              <Option value="Glass">Glass</Option>
+            <Select
+              name="Type"
+              id="Type"
+              onChange={(e) =>
+                setSelectedTypeId(
+                  types.findIndex(
+                    (type) => type.recycleTypeName == e.target.value
+                  )
+                )
+              }
+            >
+              {types.map((t) => (
+                <Option key={t.id} value={t.recycleTypeName}>
+                  {t.recycleTypeName}
+                </Option>
+              ))}
             </Select>
-            <Input placeholder="Name..." type={"text"} />
-            <Input placeholder="Price..." type={"number"} />
-            <Button>ADD</Button>
+            <Input
+              placeholder="Name..."
+              type={"text"}
+              value={productName}
+              onChange={(e) => setProductName(e.target.value)}
+            />
+            <Input
+              placeholder="Price..."
+              type={"number"}
+              value={price}
+              min={0}
+              max={100}
+              onChange={(e) => setPrice(e.target.value)}
+            />
+            <Button onClick={() => addProduct()}>ADD</Button>
           </ProductName>
         </Details>
 
         <Hr />
-        <Product>
-          <ProductDetail>
-            <Image src="" />
-            <Details>
-              <ProductName>
-                <b>Product:</b> JESSIE THUNDER SHOES
-              </ProductName>
-              <ProductId>
-                <b>ID:</b> 93813718293
-              </ProductId>
-            </Details>
-          </ProductDetail>
-          <PriceDetail>
-            <ProductPrice>RC 30</ProductPrice>
-          </PriceDetail>
-        </Product>
-        <Hr />
-        <Product>
-          <ProductDetail>
-            <Image src="" />
-            <Details>
-              <ProductName>
-                <b>Product:</b> HAKURA T-SHIRT
-              </ProductName>
-              <ProductId>
-                <b>ID:</b> 93813718293
-              </ProductId>
-            </Details>
-          </ProductDetail>
-          <PriceDetail>
-            <ProductPrice>RC 20</ProductPrice>
-          </PriceDetail>
-        </Product>
+        {products.map((p) => (
+          <>
+            <Product key={p.id}>
+              <ProductDetail>
+                <Image src="" />
+                <Details>
+                  <ProductName>
+                    <b>Product: </b> {p.recycleName}
+                  </ProductName>
+                  <ProductId>
+                    <b>Type: </b> {p.recycleTypeName}
+                  </ProductId>
+                </Details>
+              </ProductDetail>
+              <PriceDetail>
+                <ProductPrice>RC {p.recyclePoint}</ProductPrice>
+              </PriceDetail>
+              <PriceDetail>
+                <ButtonDelete onClick={() => deleteProduct(p.id)}>
+                  DELETE
+                </ButtonDelete>
+              </PriceDetail>
+            </Product>
+            <Hr />
+          </>
+        ))}
       </Wrapper>
     </Container>
   );

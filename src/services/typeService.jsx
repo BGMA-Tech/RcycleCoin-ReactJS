@@ -1,7 +1,23 @@
-import axios from 'axios';
-import { RCYCLE_TYPE_BASE_URL } from '../constants/serviceConstants.jsx';
+import axios from "axios";
+import { RCYCLE_TYPE_BASE_URL } from "../constants/serviceConstants.jsx";
+import Cookies from "universal-cookie";
 
 export default class TypeService {
+  constructor() {
+    const cookies = new Cookies();
+    axios.defaults.headers.common["Authorization"] = `Bearer ${cookies.get(
+      "token"
+    )}`;
+    axios.interceptors.response.use(
+      (res) => res,
+
+      (err) => {
+        alert("Please login again");
+        //cookies.remove("token");
+        // window.location.replace("/login");
+      }
+    );
+  }
   add(name) {
     return axios.post(`${RCYCLE_TYPE_BASE_URL}/add`, {
       recycleTypeName: name,
@@ -21,7 +37,7 @@ export default class TypeService {
 
   getAll(page, size) {
     return axios.get(
-      `${RCYCLE_TYPE_BASE_URL}/RecycleType/getlist?Page=${page}&PageSize=${size}`
+      `${RCYCLE_TYPE_BASE_URL}/getlist?Page=${page}&PageSize=${size}`
     );
   }
 
