@@ -21,22 +21,3 @@ export const sliderItems = [
     bg: "f5fafd",
   },
 ];
-
-export const popularProducts = [
-  {
-    id: 1,
-    img: plasticBottle,
-  },
-  {
-    id: 2,
-    img: pepsiBottle,
-  },
-  {
-    id: 3,
-    img: duracell,
-  },
-  {
-    id: 4,
-    img: box,
-  },
-];

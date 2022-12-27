@@ -1,19 +1,19 @@
 import {
-    FavoriteBorderOutlined,
-    SearchOutlined,
-    ShoppingCartOutlined,
-  } from "@material-ui/icons";
+  FavoriteBorderOutlined,
+  SearchOutlined,
+  ShoppingCartOutlined,
+} from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-  
+
 const Info = styled.div`
-  opacity: 0;
+  opacity: 1;
   width: 100%;
   height: 100%;
   position: absolute;
   top: 0;
   left: 0;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.01);
   z-index: 3;
   display: flex;
   align-items: center;
@@ -23,18 +23,17 @@ const Info = styled.div`
 `;
 
 const Container = styled.div`
-  flex: 1;
   margin: 5px;
   min-width: 280px;
   height: 350px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #E1F0CA;
+  background-color: #e1f0ca;
   position: relative;
   border-radius: 5%;
 
-  &:hover ${Info}{
+  &:hover ${Info} {
     opacity: 1;
   }
 `;
@@ -47,36 +46,17 @@ const Circle = styled.div`
   position: absolute;
 `;
 
-const Image = styled.img`
-  height: 75%;
-  z-index: 2;
-`;
-
-const Icon = styled.div`
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 10px;
-  transition: all 0.5s ease;
-  &:hover {
-    background-color: #e9f5f5;
-    transform: scale(1.1);
-  }
-`;
-
 const Product = ({ item }) => {
   return (
-    <Link to={"/product"}>
-    <Container>
-      <Circle />
-      <Image src={item.img} />
-      <Info> 
-      </Info>
-    </Container>
+    <Link to={"/product"} state={item}>
+      <Container>
+        <Circle />
+        <Info>
+          Name: {item.recycleName}
+          <br></br>
+          Point: {item.recyclePoint}
+        </Info>
+      </Container>
     </Link>
   );
 };

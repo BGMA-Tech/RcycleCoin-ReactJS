@@ -1,4 +1,8 @@
+import { useState } from "react";
+import { Link, Navigate } from "react-router-dom";
 import styled from "styled-components";
+import Cookies from "universal-cookie";
+import UserService from "../services/userService";
 
 const Container = styled.div`
   width: 100vw;
@@ -28,7 +32,7 @@ const Title = styled.h1`
   font-weight: 300;
 `;
 
-const Form = styled.form`
+const Form = styled.div`
   display: flex;
   flex-direction: column;
   text-align: center;
@@ -54,7 +58,7 @@ const Button = styled.button`
   margin-bottom: 10px;
 `;
 
-const Link = styled.a`
+const CustomLink = styled.p`
   margin: 5px 0px;
   font-size: 12px;
   text-decoration: underline;
@@ -62,15 +66,51 @@ const Link = styled.a`
 `;
 
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const userService = new UserService();
+  const cookies = new Cookies();
+
+  const login = () => {
+    userService
+      .login(email, password)
+      .then((res) => {
+        console.log(res.data.token);
+        cookies.set("token", res.data.token);
+        setIsLoggedIn(true);
+        window.location.reload();
+      })
+      .catch((err) => console.log(err))
+      .finally(() => {
+        setEmail("");
+        setPassword("");
+        setIsLoggedIn(false);
+      });
+  };
+
   return (
     <Container>
       <Wrapper>
         <Title>LOGIN</Title>
+        {isLoggedIn ||
+          (cookies.get("token") && <Navigate to={"/"} replace={true} />)}
         <Form>
-          <Input placeholder="email" />
-          <Input placeholder="password" />
-          <Button>LOGIN</Button>
-          <Link>CREATE A NEW ACCOUNT</Link>
+          <Input
+            placeholder="email"
+            onChange={(e) => setEmail(e.target.value)}
+            value={email}
+          />
+          <Input
+            placeholder="password"
+            type={"password"}
+            onChange={(e) => setPassword(e.target.value)}
+            value={password}
+          />
+          <Button onClick={login}>LOGIN</Button>
+          <Link to={"/register"}>
+            <CustomLink>CREATE A NEW ACCOUNT</CustomLink>
+          </Link>
         </Form>
       </Wrapper>
     </Container>
