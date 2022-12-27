@@ -15,8 +15,8 @@ import AdminProducts from "./pages/AdminProducts";
 import AdminProfile from "./pages/AdminProfile";
 import Transaction from "./pages/Transaction";
 
-const RouterSize = styled.div`
-  height: 800px;
+const RoutesSize = styled.div`
+  min-height: 700px;
 `;
 
 function App() {
@@ -24,7 +24,7 @@ function App() {
     <div className="App">
       <Announcement />
       <Navbar />
-      <RouterSize>
+      <RoutesSize>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
@@ -37,7 +37,7 @@ function App() {
           <Route path="/adminProfile" element={<AdminProfile />} />
           <Route path="/transaction" element={<Transaction />} />
         </Routes>
-      </RouterSize>
+      </RoutesSize>
       <Footer />
     </div>
   );

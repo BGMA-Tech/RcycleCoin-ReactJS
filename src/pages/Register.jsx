@@ -1,4 +1,6 @@
+import { useState } from "react";
 import styled from "styled-components";
+import UserService from "../services/userService";
 
 const Container = styled.div`
   width: 100vw;
@@ -28,7 +30,7 @@ const Title = styled.h1`
   font-weight: 300;
 `;
 
-const Form = styled.form`
+const Form = styled.div`
   display: flex;
   flex-wrap: wrap;
   text-align: center;
@@ -71,24 +73,136 @@ const CheckButton = styled.button`
 `;
 
 const Register = () => {
+  const [name, setName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [idNumber, setIdNumber] = useState("");
+  const [year, setYear] = useState(0);
+  const [userName, setUserName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [isVerify, setIsVerify] = useState(null);
+
+  const userService = new UserService();
+
+  const verifyIDNumber = () => {
+    userService
+      .getVerifyId(idNumber, name, lastName, year)
+      .then((res) => setIsVerify(res.data.data));
+  };
+
+  const setYearWithControl = (text) => {
+    let newText = text.length > 4 ? text.toString().substring(0, 4) : text;
+    setYear(newText);
+  };
+
+  const register = () => {
+    if (!isVerify) {
+      alert("Please verify your ID number");
+      return;
+    }
+    if (
+      name == "" ||
+      lastName == "" ||
+      idNumber == "" ||
+      year.length != 4 ||
+      userName == "" ||
+      email == "" ||
+      password == "" ||
+      confirmPassword == "" ||
+      password != confirmPassword ||
+      !email.includes("@") ||
+      !email.includes(".")
+    ) {
+      alert("Please check the information you entered");
+      return;
+    }
+    userService
+      .register(email, password, name, lastName, "Personel", "")
+      .then((res) => {
+        console.log(res);
+        window.location.replace("/login");
+      })
+      .catch((err) => console.log(err))
+      .finally(() => {
+        name = "";
+        lastName = "";
+        idNumber = "";
+        userName = "";
+        email = "";
+        password = "";
+        confirmPassword = "";
+      });
+  };
   return (
     <Container>
       <Wrapper>
         <Title>CREATE AN ACCOUNT</Title>
         <Form>
-          <Input placeholder="name" />
-          <Input placeholder="last name" />
-          <Input placeholder="ID number" />
+          <Input
+            placeholder="name"
+            onChange={(e) => setName(e.target.value)}
+            value={name}
+            style={{
+              color: isVerify == null ? "black" : isVerify ? "green" : "red",
+            }}
+          />
+          <Input
+            placeholder="last name"
+            onChange={(e) => setLastName(e.target.value)}
+            style={{
+              color: isVerify == null ? "black" : isVerify ? "green" : "red",
+            }}
+            value={lastName}
+          />
+          <Input
+            placeholder="ID number"
+            onChange={(e) => setIdNumber(e.target.value)}
+            style={{
+              color: isVerify == null ? "black" : isVerify ? "green" : "red",
+            }}
+            maxLength={11}
+            value={idNumber}
+          />
           <Form>
-            {/* TODO: Max length doesn't work */}
-            <Input placeholder="birthday year" type={"number"} maxLength={4} />
-            <CheckButton>CREATE</CheckButton>
+            <Input
+              placeholder="birthday year"
+              type={"number"}
+              maxLength={4}
+              max={2200}
+              size={4}
+              minLength={4}
+              value={year}
+              onChange={(e) => setYearWithControl(e.target.value)}
+              style={{
+                color: isVerify == null ? "black" : isVerify ? "green" : "red",
+              }}
+            />
+            <CheckButton onClick={() => verifyIDNumber()}>Check ID</CheckButton>
           </Form>
-          <Input placeholder="username" />
-          <Input placeholder="email" />
-          <Input placeholder="password" />
-          <Input placeholder="confirm password" />
-          <Button>CREATE</Button>
+          <Input
+            placeholder="username"
+            onChange={(e) => setUserName(e.target.value)}
+            value={userName}
+          />
+          <Input
+            placeholder="email"
+            onChange={(e) => setEmail(e.target.value)}
+            value={email}
+          />
+          <Input
+            placeholder="password"
+            onChange={(e) => setPassword(e.target.value)}
+            value={password}
+            type="password"
+          />
+          <Input
+            placeholder="confirm password"
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            value={confirmPassword}
+            type="password"
+          />
+          <Button onClick={() => register()}>CREATE</Button>
           <Agreement>
             By creating an account, I consent to the processing of my personal
             data in <b>PRIVACY POLICY</b>
