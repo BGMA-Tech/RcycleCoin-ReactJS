@@ -142,6 +142,9 @@ const Transaction = () => {
       .add(tokenService.getUserPersonelId(), toPersonelId, coinAmount)
       .then((res) => {
         setSelectedOption(0);
+        setToPersonelId("");
+        setCoinAmount(0);
+        window.location.reload();
       })
       .catch((err) => console.log(err));
   };

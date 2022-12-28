@@ -12,9 +12,7 @@ export default class TypeService {
       (res) => res,
 
       (err) => {
-        alert("Please login again");
-        //cookies.remove("token");
-        // window.location.replace("/login");
+        alert("Please try again");
       }
     );
   }
