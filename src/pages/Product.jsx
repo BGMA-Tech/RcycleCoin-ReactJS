@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import rcycleIcon from "../assets/images/recycle.jpg";
-import { useLocation } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { useState } from "react";
 import UserProductService from "../services/userProductService";
@@ -136,7 +136,7 @@ const Product = () => {
   const addUserProductService = () => {
     userProductService
       .add(tokenService.getUserId, product.id, quantity)
-      .then((res) => console.log(res))
+      .then((res) => window.location.replace("/"))
       .catch((err) => console.log(err));
   };
 
