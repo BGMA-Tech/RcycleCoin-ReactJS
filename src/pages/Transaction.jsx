@@ -137,13 +137,22 @@ const Transaction = () => {
       : transactionService.getAllByToId(tokenService.getUserPersonelId());
   };
 
+  const clearInputs = () => {
+    setSelectedOption(0);
+    setToPersonelId("");
+    setCoinAmount(0);
+  };
+
   const addTransaction = () => {
+    if (coinAmount <= 0 || toPersonelId == tokenService.getUserPersonelId()) {
+      alert("Check the written information for creating transaction");
+      clearInputs();
+      return;
+    }
     transactionService
       .add(tokenService.getUserPersonelId(), toPersonelId, coinAmount)
       .then((res) => {
-        setSelectedOption(0);
-        setToPersonelId("");
-        setCoinAmount(0);
+        clearInputs();
         window.location.reload();
       })
       .catch((err) => console.log(err));
@@ -153,11 +162,14 @@ const Transaction = () => {
     setIsLoading(true);
     getTransactionMethod()
       .then((res) => {
-        setTransactions(res.data.data);
+        setTransactions(selectedOption == 0 ? res.data : res.data.data);
         setIsLoading(false);
-        console.log(res.data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setIsLoading(false);
+
+        console.log(err);
+      });
   }, [selectedOption]);
 
   return (

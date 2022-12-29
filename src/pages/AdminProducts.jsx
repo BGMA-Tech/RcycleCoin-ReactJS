@@ -183,6 +183,7 @@ const AdminProducts = () => {
   };
 
   const addProduct = () => {
+    console.log(types[selectedTypeId]);
     productService
       .add(productName, price, types[selectedTypeId].id)
       .then((res) => {
@@ -218,8 +219,9 @@ const AdminProducts = () => {
     typeService
       .getAll(0, 10)
       .then((res) => {
+        console.log(res);
         setTypes(res.data.items);
-        setSelectedTypeId(res.data.items[0].id);
+        setSelectedTypeId(0);
         getAllProducts();
       })
       .catch((err) => console.log(err));
@@ -282,8 +284,8 @@ const AdminProducts = () => {
 
         <Hr />
         {products.map((p) => (
-          <>
-            <Product key={p.id}>
+          <div key={p.id}>
+            <Product>
               <ProductDetail>
                 <Image src="" />
                 <Details>
@@ -305,7 +307,7 @@ const AdminProducts = () => {
               </PriceDetail>
             </Product>
             <Hr />
-          </>
+          </div>
         ))}
       </Wrapper>
     </Container>
