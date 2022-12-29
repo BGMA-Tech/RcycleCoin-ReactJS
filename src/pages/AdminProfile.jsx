@@ -111,7 +111,7 @@ const AdminProfile = () => {
     userService
       .getById(tokenService.getUserId())
       .then((res) => {
-        setUser(res.data.data.data);
+        setUser(res.data.data);
         setIsLoading(false);
       })
       .catch((err) => console.log(err));

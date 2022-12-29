@@ -12,7 +12,10 @@ export default class TransactionService {
       (res) => res,
 
       (err) => {
-        alert("Please try again");
+        if (err.response.status == 401) {
+          cookies.remove("token");
+          window.location.replace("/login");
+        }
       }
     );
   }

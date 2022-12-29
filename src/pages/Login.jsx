@@ -76,12 +76,11 @@ const Login = () => {
     userService
       .login(email, password)
       .then((res) => {
-        console.log(res.data.token);
         cookies.set("token", res.data.token);
         setIsLoggedIn(true);
-        window.location.reload();
+        window.location.replace("/");
       })
-      .catch((err) => console.log(err))
+      .catch((err) => console.error(err))
       .finally(() => {
         setEmail("");
         setPassword("");
@@ -93,8 +92,6 @@ const Login = () => {
     <Container>
       <Wrapper>
         <Title>LOGIN</Title>
-        {isLoggedIn ||
-          (cookies.get("token") && <Navigate to={"/"} replace={true} />)}
         <Form>
           <Input
             placeholder="email"

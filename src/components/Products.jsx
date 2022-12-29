@@ -20,7 +20,7 @@ const Products = () => {
       .getAll(0, 10)
       .then((result) => {
         setProuducts(result.data.items);
-        console.log(result.data.items[0]);
+        console.log(result);
       })
       .catch((err) => {
         console.log(err);
