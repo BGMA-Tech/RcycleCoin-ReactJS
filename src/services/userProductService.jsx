@@ -13,7 +13,10 @@ export default class UserProductService {
     axios.interceptors.response.use(
       (res) => res,
       (err) => {
-        alert("Please try again");
+        if (err.response.status == 401) {
+          cookies.remove("token");
+          window.location.replace("/login");
+        }
       }
     );
   }
@@ -80,11 +83,11 @@ export default class UserProductService {
             userService
               .getById(userId)
               .then((res) => {
-                console.log("DATA:", res.data);
+                console.log("DATA:", res.data.data.personelId);
                 coinService
                   .update(
-                    res.data.data.data.personelId,
-                    res.data.data.data.coin.totalCoin + quantity * coin
+                    res.data.data.personelId,
+                    res.data.data.coin.totalCoin + quantity * coin
                   )
                   .then((res) => {
                     window.location.reload();
